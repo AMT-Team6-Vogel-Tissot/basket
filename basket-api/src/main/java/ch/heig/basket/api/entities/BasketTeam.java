@@ -8,13 +8,17 @@ import jakarta.persistence.*;
 public class BasketTeam {
 
 
+
+
     @Id
+    private int team_id;
     private String team_name;
 
 
     public BasketTeam() {}
 
-    public BasketTeam(String name) {
+    public BasketTeam(int id, String name) {
+        this.team_id = id;
         this.team_name = name;
 
     }

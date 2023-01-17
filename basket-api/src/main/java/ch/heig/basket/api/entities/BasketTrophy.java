@@ -1,9 +1,10 @@
 package ch.heig.basket.api.entities;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "Trophy")
 @Table(name = "trophies")
@@ -11,12 +12,18 @@ public class BasketTrophy {
 
 
     @Id
+    private int trophy_id;
     private String trophy_name;
+
+    @ManyToMany
+    @JoinTable(name = "players_trophies", joinColumns = @JoinColumn(name= "trophy_id"), inverseJoinColumns = @JoinColumn(name="player_id"))
+    private List<BasketPlayer> players = new ArrayList<>();
 
 
     public BasketTrophy() {}
 
-    public BasketTrophy(String name) {
+    public BasketTrophy(int id, String name) {
+        this.trophy_id = id;
         this.trophy_name = name;
 
     }
