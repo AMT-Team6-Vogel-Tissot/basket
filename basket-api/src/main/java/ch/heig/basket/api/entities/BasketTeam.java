@@ -23,8 +23,8 @@ public class BasketTeam {
         return name;
     }
 
-    public void setName(String author) {
-        this.name = author;
+    public void setName(String name) {
+        this.name = name;
     }
 
 
