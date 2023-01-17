@@ -9,22 +9,22 @@ public class BasketTeam {
 
 
     @Id
-    private String name;
+    private String team_name;
 
 
     public BasketTeam() {}
 
     public BasketTeam(String name) {
-        this.name = name;
+        this.team_name = name;
 
     }
 
     public String getName() {
-        return name;
+        return team_name;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.team_name = name;
     }
 
 

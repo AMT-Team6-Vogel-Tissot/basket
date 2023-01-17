@@ -11,22 +11,22 @@ public class BasketTrophy {
 
 
     @Id
-    private String name;
+    private String trophy_name;
 
 
     public BasketTrophy() {}
 
     public BasketTrophy(String name) {
-        this.name = name;
+        this.trophy_name = name;
 
     }
 
     public String getName() {
-        return name;
+        return trophy_name;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.trophy_name = name;
     }
 
 

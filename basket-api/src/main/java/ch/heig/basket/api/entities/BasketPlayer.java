@@ -1,9 +1,7 @@
 package ch.heig.basket.api.entities;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity(name = "Player")
 @Table(name = "players")
@@ -13,17 +11,20 @@ public class BasketPlayer {
     @Id
     private int id;
 
-    private String name;
+    private String player_name;
 
-    private String surname;
+    private String player_surname;
+
+    @ManyToOne @JoinColumn(name="fq_team_name", nullable = false)
+    private BasketTeam fq_name_team;
 
 
     public BasketPlayer() {}
 
     public BasketPlayer(int id, String name, String surname) {
         this.id = id;
-        this.name = name;
-        this.surname = surname;
+        this.player_name = name;
+        this.player_surname = surname;
     }
 
     public int getId() {
@@ -35,19 +36,19 @@ public class BasketPlayer {
     }
 
     public String getName() {
-        return name;
+        return player_name;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.player_name = name;
     }
 
     public String getSurname() {
-        return surname;
+        return player_surname;
     }
 
     public void setSurname(String surname) {
-        this.surname = surname;
+        this.player_surname = surname;
     }
 
 
