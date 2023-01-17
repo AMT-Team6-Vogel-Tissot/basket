@@ -1,4 +1,4 @@
-package ch.heig.quotes.api.exceptions;
+package ch.heig.basket.api.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

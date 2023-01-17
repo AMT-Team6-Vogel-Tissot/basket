@@ -1,4 +1,4 @@
-Feature: Application quotes
+ Feature: Application quotes
 
 Scenario: Register a new quote
 Given I have an quote payload
