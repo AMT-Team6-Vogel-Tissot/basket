@@ -1,0 +1,299 @@
+openapi: '3.0.3'
+info:
+  description: Api Documentation
+  version: '1.0'
+  title: Api Documentation
+servers:
+  - url: 'http://localhost:9090/api'
+tags:
+  - name: Basket-end-point
+    description: Affichage et gestion de joueurs de basket et de leurs trophées individuel
+paths:
+  /players:
+    get:
+      tags:
+        - Basket-end-point
+      summary: Obtient une liste de tous les joueurs de basket
+      operationId: getPlayers
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Player'
+        '404':
+          description: Not Found
+    post:
+      tags:
+        - Basket-end-point
+      summary: Ajoute un nouveau joueur de basket
+      operationId: addPlayer
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/Player'
+      responses:
+        '201':
+          description: joueur créé
+          headers:
+            Location:
+              description: URL du joueur crée
+              schema:
+                type: string
+                format: uri
+  /players/{id}:
+    put:
+      tags:
+        - Basket-end-point
+      summary: Ecrasement d'un joueur de basket
+      operationId: putPlayer
+      parameters:
+        - name: id
+          in: path
+          description: id du joueur de basket à écraser
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/Player'
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/Player'
+        '404':
+          description: Not Found
+      deprecated: false
+    patch:
+      tags:
+        - Basket-end-point
+      summary: Modifie partiellement le joueur de basket
+      operationId: patchPlayer
+      parameters:
+        - name: id
+          in: path
+          description: id du joueur de basket à modifier
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/Player'
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/Player'
+        '404':
+          description: Not Found
+      deprecated: false
+  /teams:
+    get:
+      tags:
+        - Basket-end-point
+      summary: Obtient une liste de tous les équipes de basket
+      operationId: getTeams
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Team'
+        '404':
+          description: Not Found
+
+  /teams/{id}:
+    get:
+      tags:
+        - Basket-end-point
+      summary: Obtient une quote
+      operationId: getTeam
+      parameters:
+        - name: id
+          in: path
+          description: numéro de l'équipe à obtenir
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/Team'
+        '404':
+          description: Not Found
+      deprecated: false
+
+  /team:
+    post:
+      tags:
+        - Basket-end-point
+      summary: Ajoute une nouvelle équipe
+      operationId: addTeam
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/Team'
+      responses:
+        '201':
+          description: équipe créée
+          headers:
+            Location:
+              description: URL de l'équipe crée
+              schema:
+                type: string
+                format: uri
+
+
+  /trophies:
+    get:
+      tags:
+        - Basket-end-point
+      summary: Obtient une liste de tous les trophées de basket
+      operationId: getTrophies
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Trophy'
+        '404':
+          description: Not Found
+    post:
+      tags:
+        - Basket-end-point
+      summary: Ajout un nouveau trophée
+      operationId: addTrophy
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/Trophy'
+      responses:
+        '201':
+          description: trophée créée
+          headers:
+            Location:
+              description: URL de l'équipe crée
+              schema:
+                type: string
+                format: uri
+
+  /trophies/{id}:
+    get:
+      tags:
+        - Basket-end-point
+      summary: Obtient tous kes trophées d'un joueur
+      operationId: getTrophy
+      parameters:
+        - name: id
+          in: path
+          description: numéro du joueur
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/Trophy'
+        '404':
+          description: Not Found
+      deprecated: false
+
+  /quotes/{id}:
+    get:
+      tags:
+        - Quotes-end-point
+      summary: Obtient une quote
+      operationId: getQuote
+      parameters:
+        - name: id
+          in: path
+          description: numéro de la quote à obtenir
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/Quote'
+        '404':
+          description: Not Found
+      deprecated: false
+components:
+  schemas:
+    Team:
+      description: description d'une équipe de basket
+      type: object
+      properties:
+        id:
+          description: numéro auto-incrémenté de l'équipe
+          type: integer
+          format: int32
+        name:
+          description: nom de l'équipe
+          type: string
+      title: Team
+    Trophy:
+      description: description d'un trophée
+      type: object
+      properties:
+        id:
+          description: numéro auto-incrémenté du trophée
+          type: integer
+          format: int32
+        name:
+          description: nom du trophée
+          type: string
+      title: Trophy
+    Player:
+      description: description d'un joueur de basket
+      type: object
+      properties:
+        name:
+          description: prénom du joueur
+          type: string
+        surname:
+          description: nom du joueur
+          type: string
+        teamName:
+          description: nom de l'équipe du joueur
+          type: string
+        id:
+          description: numéro auto-incrémenté du joueur de basket
+          type: integer
+          format: int32
+      title: Player
