@@ -3,8 +3,8 @@ package ch.heig.basket.api.endpoints;
 import ch.heig.basket.api.entities.QuoteEntity;
 import ch.heig.basket.api.exceptions.QuoteNotFoundException;
 import ch.heig.basket.api.repositories.QuoteRepository;
-import org.openapitools.api.QuotesApi;
-import org.openapitools.model.Quote;
+//import org.openapitools.api.QuotesApi;
+//import org.openapitools.model.Quote;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +18,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-public class BasketEndPoint implements QuotesApi {
-
+public class BasketEndPoint {
+/*
     @Autowired
     private QuoteRepository quoteRepository;
 
@@ -66,5 +66,5 @@ public class BasketEndPoint implements QuotesApi {
             throw new QuoteNotFoundException(id);
         }
     }
-
+*/
 }
