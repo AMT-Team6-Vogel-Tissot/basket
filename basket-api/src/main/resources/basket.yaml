@@ -41,10 +41,14 @@ paths:
           description: joueur créé
           headers:
             Location:
-              description: URL du joueur crée
+              description: URL du joueur créé
               schema:
                 type: string
                 format: uri
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/Player'
   /players/{id}:
     put:
       tags:
@@ -124,7 +128,7 @@ paths:
     get:
       tags:
         - Basket-end-point
-      summary: Obtient une quote
+      summary: Obtient une équipe
       operationId: getTeam
       parameters:
         - name: id
@@ -258,17 +262,18 @@ components:
       description: description d'un joueur de basket
       type: object
       properties:
+        id:
+          description: numéro auto-incrémenté du joueur de basket
+          type: integer
+          format: int32
         name:
           description: prénom du joueur
           type: string
         surname:
           description: nom du joueur
           type: string
-        teamName:
-          description: nom de l'équipe du joueur
-          type: string
-        id:
-          description: numéro auto-incrémenté du joueur de basket
+        fk_team:
+          description: id de l'équipe du joueur
           type: integer
           format: int32
       title: Player

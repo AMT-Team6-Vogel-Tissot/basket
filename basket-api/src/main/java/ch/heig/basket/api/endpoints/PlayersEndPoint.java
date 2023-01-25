@@ -18,23 +18,42 @@ import java.util.List;
 public class PlayersEndPoint implements PlayersApi{
 
     @Autowired
-    private PlayerRepository quoteRepository;
+    private PlayerRepository playerRepository;
+    @Autowired
     private TeamRepository teamRepository;
 
     @Override
     public ResponseEntity<List<Player>> getPlayers() {
-        List<BasketPlayer> playerEntities = quoteRepository.findAll();
+        List<BasketPlayer> playerEntities = playerRepository.findAll();
         List<Player> players = new ArrayList<>();
         for (BasketPlayer playerEntity : playerEntities) {
             Player player = new Player();
             player.setId(playerEntity.getId());
             player.setName(playerEntity.getName());
             player.setSurname(playerEntity.getSurname());
-            player.setTeamName(playerEntity.getFq_name_team().getName());
+            player.setFkTeam(playerEntity.getFq_name_team().getTeam_id());
             players.add(player);
         }
-        return new ResponseEntity<List<Player>>(players,HttpStatus.OK);
+        return new ResponseEntity<>(players, HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<Player> addPlayer(Player player) {
+
+        Player newPlayer = new Player();
+
+        BasketTeam basketTeam = teamRepository.findById(player.getFkTeam().intValue());
+
+        BasketPlayer basketPlayer = playerRepository.save(new BasketPlayer(player.getId(), player.getName(), player.getSurname(), basketTeam));
+
+        newPlayer.setId(basketPlayer.getId());
+        newPlayer.setName(basketPlayer.getName());
+        newPlayer.setSurname(basketPlayer.getSurname());
+        newPlayer.setFkTeam(basketPlayer.getFq_name_team().getTeam_id());
+
+        return new ResponseEntity<>(newPlayer, HttpStatus.CREATED);
+    }
+
 /*
     @Override
     public ResponseEntity<Void> addQuote(@RequestBody Quote quote) {
