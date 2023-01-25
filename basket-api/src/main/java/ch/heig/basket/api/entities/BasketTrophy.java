@@ -22,19 +22,25 @@ public class BasketTrophy {
 
     public BasketTrophy() {}
 
-    public BasketTrophy(int id, String name) {
+    public BasketTrophy(int id, String name, List<BasketPlayer> players) {
         this.trophy_id = id;
         this.trophy_name = name;
-
+        this.players = players;
     }
 
-    public String getName() {
+    public String getTrophy_name() {
         return trophy_name;
     }
 
-    public void setName(String name) {
+    public void setTrophy_name(String name) {
         this.trophy_name = name;
     }
 
+    public List<BasketPlayer> getPlayers() {
+        return players;
+    }
 
+    public void setPlayers(List<BasketPlayer> players) {
+        this.players = players;
+    }
 }

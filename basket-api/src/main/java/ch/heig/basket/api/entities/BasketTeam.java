@@ -7,9 +7,6 @@ import jakarta.persistence.*;
 @Table(name = "teams")
 public class BasketTeam {
 
-
-
-
     @Id
     private int team_id;
     private String team_name;

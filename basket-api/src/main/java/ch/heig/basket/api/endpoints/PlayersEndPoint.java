@@ -1,42 +1,41 @@
 package ch.heig.basket.api.endpoints;
 
-import ch.heig.basket.api.entities.QuoteEntity;
-import ch.heig.basket.api.exceptions.QuoteNotFoundException;
-import ch.heig.basket.api.repositories.QuoteRepository;
-//import org.openapitools.api.QuotesApi;
-//import org.openapitools.model.Quote;
+import ch.heig.basket.api.entities.BasketPlayer;
+import ch.heig.basket.api.entities.BasketTeam;
+import ch.heig.basket.api.repositories.PlayerRepository;
+import ch.heig.basket.api.repositories.TeamRepository;
+import org.openapitools.api.PlayersApi;
+import org.openapitools.model.Player;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-public class BasketEndPoint {
-/*
+public class PlayersEndPoint implements PlayersApi{
+
     @Autowired
-    private QuoteRepository quoteRepository;
+    private PlayerRepository quoteRepository;
+    private TeamRepository teamRepository;
 
     @Override
-    public ResponseEntity<List<Quote>> getQuotes() {
-        List<QuoteEntity> quoteEntities= quoteRepository.findAll();
-        List<Quote> quotes  = new ArrayList<>();
-        for (QuoteEntity quoteEntity : quoteEntities) {
-            Quote quote = new Quote();
-            quote.setId(quoteEntity.getId());
-            quote.setAuthor(quoteEntity.getAuthor());
-            quote.setCitation(quoteEntity.getCitation());
-            quotes.add(quote);
+    public ResponseEntity<List<Player>> getPlayers() {
+        List<BasketPlayer> playerEntities = quoteRepository.findAll();
+        List<Player> players = new ArrayList<>();
+        for (BasketPlayer playerEntity : playerEntities) {
+            Player player = new Player();
+            player.setId(playerEntity.getId());
+            player.setName(playerEntity.getName());
+            player.setSurname(playerEntity.getSurname());
+            player.setTeamName(playerEntity.getFq_name_team().getName());
+            players.add(player);
         }
-        return new ResponseEntity<List<Quote>>(quotes,HttpStatus.OK);
+        return new ResponseEntity<List<Player>>(players,HttpStatus.OK);
     }
-
+/*
     @Override
     public ResponseEntity<Void> addQuote(@RequestBody Quote quote) {
         QuoteEntity quoteEntity = new QuoteEntity();

@@ -28,10 +28,11 @@ public class BasketPlayer {
 
     public BasketPlayer() {}
 
-    public BasketPlayer(int id, String name, String surname) {
+    public BasketPlayer(int id, String name, String surname, BasketTeam fq_name_team) {
         this.player_id = id;
         this.player_name = name;
         this.player_surname = surname;
+        this.fq_name_team = fq_name_team;
     }
 
     public int getId() {
@@ -57,6 +58,10 @@ public class BasketPlayer {
     public void setSurname(String surname) {
         this.player_surname = surname;
     }
+
+    public BasketTeam getFq_name_team(){ return fq_name_team; }
+    public void setFq_name_team(BasketTeam fq_name_team){ this.fq_name_team = fq_name_team; }
+
 
 
 }
