@@ -2,8 +2,10 @@ package ch.heig.basket.api.services;
 
 import ch.heig.basket.api.entities.BasketPlayer;
 import ch.heig.basket.api.entities.BasketTeam;
+import ch.heig.basket.api.exceptions.TeamNotFoundException;
 import ch.heig.basket.api.repositories.PlayerRepository;
 import ch.heig.basket.api.repositories.TeamRepository;
+import org.modelmapper.ModelMapper;
 import org.openapitools.model.Player;
 import org.springframework.stereotype.Service;
 
@@ -11,43 +13,47 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class PlayersService {
+public class PlayerService {
 
     private final PlayerRepository playerRepository;
     private final TeamRepository teamRepository;
+    private final ModelMapper modelMapper;
 
-    public PlayersService(PlayerRepository playerRepository, TeamRepository teamRepository) {
+    public PlayerService(PlayerRepository playerRepository, TeamRepository teamRepository) {
         this.playerRepository = playerRepository;
         this.teamRepository = teamRepository;
+        modelMapper = new ModelMapper();
     }
 
     public List<Player> getPlayers(){
         List<BasketPlayer> playerEntities = playerRepository.findAll();
         List<Player> players = new ArrayList<>();
+
         for (BasketPlayer playerEntity : playerEntities) {
-            Player player = new Player();
-            player.setId(playerEntity.getId());
-            player.setName(playerEntity.getName());
-            player.setSurname(playerEntity.getSurname());
-            player.setFkTeam(playerEntity.getFq_name_team().getTeam_id());
-            players.add(player);
+            Player p;
+            p = modelMapper.map(playerEntity, Player.class);
+            p.setFkTeam(playerEntity.getFq_name_team().getTeam_id());
+
+            players.add(p);
         }
 
         return players;
     }
 
-    public Player addPlayer(Player player) {
+    public Player addPlayer(Player player) throws TeamNotFoundException {
 
-        Player newPlayer = new Player();
+        Player newPlayer;
 
         BasketTeam basketTeam = teamRepository.findById(player.getFkTeam().intValue());
 
+        if(basketTeam == null){
+            throw new TeamNotFoundException(player.getFkTeam());
+        }
+
         BasketPlayer basketPlayer = playerRepository.save(new BasketPlayer(player.getId(), player.getName(), player.getSurname(), basketTeam));
 
-        newPlayer.setId(basketPlayer.getId());
-        newPlayer.setName(basketPlayer.getName());
-        newPlayer.setSurname(basketPlayer.getSurname());
-        newPlayer.setFkTeam(basketPlayer.getFq_name_team().getTeam_id());
+        newPlayer = modelMapper.map(basketPlayer, Player.class);
+        newPlayer.setFkTeam(player.getFkTeam());
 
         return newPlayer;
     }

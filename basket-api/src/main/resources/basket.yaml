@@ -24,8 +24,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Player'
-        '404':
-          description: Not Found
     post:
       tags:
         - Basket-end-point
@@ -49,6 +47,8 @@ paths:
             'application/json':
               schema:
                 $ref: '#/components/schemas/Player'
+        '404':
+          description: Not Found
   /players/{id}:
     put:
       tags:
@@ -252,7 +252,7 @@ components:
       properties:
         id:
           description: numéro auto-incrémenté du trophée
-          type: integer
+          type: object
           format: int32
         name:
           description: nom du trophée

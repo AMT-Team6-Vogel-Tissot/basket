@@ -1,6 +1,7 @@
 package ch.heig.basket.api.endpoints;
 
-import ch.heig.basket.api.services.PlayersService;
+import ch.heig.basket.api.exceptions.PlayerNotFoundException;
+import ch.heig.basket.api.services.PlayerService;
 import org.openapitools.api.PlayersApi;
 import org.openapitools.model.Player;
 import org.springframework.http.ResponseEntity;
@@ -10,24 +11,29 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-public class PlayersEndPoint implements PlayersApi{
+public class PlayerEndPoint implements PlayersApi{
 
-    private final PlayersService playersService;
+    private final PlayerService playerService;
 
-    public PlayersEndPoint(PlayersService playersService) {
-        this.playersService = playersService;
+    public PlayerEndPoint(PlayerService playerService) {
+        this.playerService = playerService;
     }
 
     @Override
     public ResponseEntity<List<Player>> getPlayers() {
-        return ResponseEntity.ok(playersService.getPlayers());
+        return ResponseEntity.ok(playerService.getPlayers());
     }
 
     @Override
     public ResponseEntity<Player> addPlayer(Player player) {
-        Player p = playersService.addPlayer(player);
+        try{
+            Player p = playerService.addPlayer(player);
 
-        return ResponseEntity.created(URI.create("/players/" + p.getId())).body(p);
+            return ResponseEntity.created(URI.create("/players/" + p.getId())).body(p);
+        } catch (PlayerNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+
     }
 
 /*
