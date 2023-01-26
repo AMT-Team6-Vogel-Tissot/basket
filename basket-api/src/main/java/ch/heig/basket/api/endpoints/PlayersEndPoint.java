@@ -1,57 +1,33 @@
 package ch.heig.basket.api.endpoints;
 
-import ch.heig.basket.api.entities.BasketPlayer;
-import ch.heig.basket.api.entities.BasketTeam;
-import ch.heig.basket.api.repositories.PlayerRepository;
-import ch.heig.basket.api.repositories.TeamRepository;
+import ch.heig.basket.api.services.PlayersService;
 import org.openapitools.api.PlayersApi;
 import org.openapitools.model.Player;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
+import java.net.URI;
 import java.util.List;
 
 @RestController
 public class PlayersEndPoint implements PlayersApi{
 
-    @Autowired
-    private PlayerRepository playerRepository;
-    @Autowired
-    private TeamRepository teamRepository;
+    private final PlayersService playersService;
+
+    public PlayersEndPoint(PlayersService playersService) {
+        this.playersService = playersService;
+    }
 
     @Override
     public ResponseEntity<List<Player>> getPlayers() {
-        List<BasketPlayer> playerEntities = playerRepository.findAll();
-        List<Player> players = new ArrayList<>();
-        for (BasketPlayer playerEntity : playerEntities) {
-            Player player = new Player();
-            player.setId(playerEntity.getId());
-            player.setName(playerEntity.getName());
-            player.setSurname(playerEntity.getSurname());
-            player.setFkTeam(playerEntity.getFq_name_team().getTeam_id());
-            players.add(player);
-        }
-        return new ResponseEntity<>(players, HttpStatus.OK);
+        return ResponseEntity.ok(playersService.getPlayers());
     }
 
     @Override
     public ResponseEntity<Player> addPlayer(Player player) {
+        Player p = playersService.addPlayer(player);
 
-        Player newPlayer = new Player();
-
-        BasketTeam basketTeam = teamRepository.findById(player.getFkTeam().intValue());
-
-        BasketPlayer basketPlayer = playerRepository.save(new BasketPlayer(player.getId(), player.getName(), player.getSurname(), basketTeam));
-
-        newPlayer.setId(basketPlayer.getId());
-        newPlayer.setName(basketPlayer.getName());
-        newPlayer.setSurname(basketPlayer.getSurname());
-        newPlayer.setFkTeam(basketPlayer.getFq_name_team().getTeam_id());
-
-        return new ResponseEntity<>(newPlayer, HttpStatus.CREATED);
+        return ResponseEntity.created(URI.create("/players/" + p.getId())).body(p);
     }
 
 /*
