@@ -39,16 +39,14 @@ paths:
           description: joueur créé
           headers:
             Location:
-              description: URL du joueur créé
+              description: URI du joueur créé
               schema:
                 type: string
                 format: uri
-          content:
-            'application/json':
-              schema:
-                $ref: '#/components/schemas/Player'
         '404':
           description: Not Found
+        '400':
+          description: Champs manquants
   /players/{id}:
     put:
       tags:
@@ -276,4 +274,8 @@ components:
           description: id de l'équipe du joueur
           type: integer
           format: int32
+      required:
+        - name
+        - surname
+        - fk_team
       title: Player

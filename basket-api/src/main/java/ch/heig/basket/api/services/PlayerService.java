@@ -40,7 +40,7 @@ public class PlayerService {
         return players;
     }
 
-    public Player addPlayer(Player player) throws TeamNotFoundException {
+    public int addPlayer(Player player) throws TeamNotFoundException {
 
         Player newPlayer;
 
@@ -55,7 +55,7 @@ public class PlayerService {
         newPlayer = modelMapper.map(basketPlayer, Player.class);
         newPlayer.setFkTeam(player.getFkTeam());
 
-        return newPlayer;
+        return newPlayer.getId();
     }
 
 }

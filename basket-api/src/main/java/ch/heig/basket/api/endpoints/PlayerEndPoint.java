@@ -25,11 +25,11 @@ public class PlayerEndPoint implements PlayersApi{
     }
 
     @Override
-    public ResponseEntity<Player> addPlayer(Player player) {
+    public ResponseEntity<Void> addPlayer(Player player) {
         try{
-            Player p = playerService.addPlayer(player);
+            int p = playerService.addPlayer(player);
 
-            return ResponseEntity.created(URI.create("/players/" + p.getId())).body(p);
+            return ResponseEntity.created(URI.create("/players/" + p)).build();
         } catch (PlayerNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
