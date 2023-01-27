@@ -11,9 +11,5 @@ import java.util.List;
 
 @Repository
 public interface PlayerRepository extends JpaRepository<BasketPlayer, Integer> {
-    BasketPlayer findById(int id);
-    //List<BasketPlayer> findByPlayerLike(String pattern);
 
-   // @Query("select f FROM Player f")
-    //List<BasketPlayer> listBasketPlayer();
 }

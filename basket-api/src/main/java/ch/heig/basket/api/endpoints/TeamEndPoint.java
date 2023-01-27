@@ -29,7 +29,7 @@ public class TeamEndPoint implements TeamsApi{
         return ResponseEntity.ok(teamService.getTeam(id));
     }
 
-
+/*
     @Override
     public ResponseEntity<Void> addTeam(Team team) {
         try{
@@ -40,5 +40,5 @@ public class TeamEndPoint implements TeamsApi{
         }
 
     }
-
+*/
 }

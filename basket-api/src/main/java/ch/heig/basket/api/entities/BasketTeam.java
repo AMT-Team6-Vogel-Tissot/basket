@@ -2,33 +2,28 @@ package ch.heig.basket.api.entities;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.List;
 
 @Entity(name = "Team")
 @Table(name = "teams")
+@NoArgsConstructor
+@Setter
+@Getter
+@AllArgsConstructor
 public class BasketTeam {
 
     @Id
-    private int team_id;
-    private String team_name;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
+    private String name;
 
-    public BasketTeam() {}
-
-    public BasketTeam(int id, String name) {
-        this.team_id = id;
-        this.team_name = name;
-
-    }
-
-    public String getName() {
-        return team_name;
-    }
-
-    public int getId() {return team_id;}
-
-    public void setName(String name) {
-        this.team_name = name;
-    }
-
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
+    private List<BasketPlayer> basketPlayers;
 
 }

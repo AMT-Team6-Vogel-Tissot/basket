@@ -1,7 +1,6 @@
 package ch.heig.basket.api.services;
 
 import ch.heig.basket.api.entities.BasketTeam;
-import ch.heig.basket.api.exceptions.TeamNotFoundException;
 import ch.heig.basket.api.repositories.TeamRepository;
 import org.modelmapper.ModelMapper;
 import org.openapitools.model.Team;
@@ -42,7 +41,7 @@ public class TeamService {
     }
 
 
-
+/*
     public int addTeam(Team team) {
         Team newTeam;
         BasketTeam basketTeam = teamRepository.save(new BasketTeam(team.getId(), team.getName()));
@@ -50,5 +49,5 @@ public class TeamService {
 
         return newTeam.getId();
     }
-
+*/
 }
