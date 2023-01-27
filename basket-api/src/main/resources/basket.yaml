@@ -1,23 +1,27 @@
 openapi: '3.0.3'
 info:
-  description: Api Documentation
+  description: Documentation de l'API Basket
   version: '1.0'
   title: Api Documentation
 servers:
   - url: 'http://localhost:9090/api'
 tags:
-  - name: Basket-end-point
-    description: Affichage et gestion de joueurs de basket et de leurs trophées individuel
+  - name: Player-end-point
+    description: Gestion des joueurs de basket
+  - name: Team-end-point
+    description: Gestion des équipes de basket
+  - name: Trophy-end-point
+    description: Gestion des trophées des joueurs de basket
 paths:
   /players:
     get:
       tags:
-        - Basket-end-point
-      summary: Obtient une liste de tous les joueurs de basket
+        - Player-end-point
+      summary: Obtient une liste de tous les joueurs de basket avec leur équipe et leurs trophées individuel
       operationId: getPlayers
       responses:
         '200':
-          description: OK
+          description: Récupération réussie
           content:
             'application/json':
               schema:
@@ -26,60 +30,58 @@ paths:
                   $ref: '#/components/schemas/Playerobj'
     post:
       tags:
-        - Basket-end-point
+        - Player-end-point
       summary: Ajoute un nouveau joueur de basket
       operationId: addPlayer
       requestBody:
         content:
           'application/json':
             schema:
-              $ref: '#/components/schemas/Player'
+              $ref: '#/components/schemas/PlayerID'
       responses:
         '201':
-          description: joueur créé
+          description: Joueur de basket créé
           headers:
             Location:
               description: URI du joueur créé
               schema:
                 type: string
                 format: uri
-        '404':
-          description: Not Found
         '400':
           description: Champs manquants
   /players/{id}:
     get:
       tags:
-        - Basket-end-point
+        - Player-end-point
       summary: Obtient un joueur de basket
       operationId: getPlayer
       parameters:
         - name: id
           in: path
-          description: id du joueur de basket à obtenir
+          description: id du joueur de basket recherché
           required: true
           schema:
             type: integer
             format: int32
       responses:
         '200':
-          description: OK
+          description: Récupération réussie
           content:
             'application/json':
               schema:
-                $ref: '#/components/schemas/Player'
+                $ref: '#/components/schemas/Playerobj'
         '404':
-          description: Not Found
+          description: Joueur de basket non trouvé
       deprecated: false
     put:
       tags:
         - Basket-end-point
-      summary: Ecrasement d'un joueur de basket
+      summary: Création ou écrasement d'un joueur de basket
       operationId: putPlayer
       parameters:
         - name: id
           in: path
-          description: id du joueur de basket à écraser
+          description: id du joueur de basket à créer ou écraser
           required: true
           schema:
             type: integer
@@ -88,42 +90,48 @@ paths:
         content:
           'application/json':
             schema:
-              $ref: '#/components/schemas/Player'
+              $ref: '#/components/schemas/PlayerID'
       responses:
         '200':
-          description: OK
+          description: Modification du joueur réussie
+          headers:
+            Location:
+              description: URI du joueur modifié
+              schema:
+                type: string
+                format: uri
+        '201':
+          description: Création du joueur réussie
           headers:
             Location:
               description: URI du joueur créé
               schema:
                 type: string
                 format: uri
-            '404':
-              description: Not Found
-            '400':
-              description: Champs manquants
+        '404':
+          description: Joueur de basket non trouvé
+        '400':
+          description: Champs manquants
       deprecated: false
   /teams:
     get:
       tags:
-        - Basket-end-point
-      summary: Obtient une liste de tous les équipes de basket
+        - Team-end-point
+      summary: Obtient une liste de toutes les équipes de Basket
       operationId: getTeams
       responses:
         '200':
-          description: OK
+          description: Récupération réussie
           content:
             'application/json':
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Team'
-        '404':
-          description: Not Found
     post:
       tags:
-        - Basket-end-point
-      summary: Ajoute une nouvelle équipe
+        - Team-end-point
+      summary: Ajoute une nouvelle équipe de Basket
       operationId: addTeam
       requestBody:
         content:
@@ -132,34 +140,32 @@ paths:
               $ref: '#/components/schemas/Team'
       responses:
         '201':
-          description: équipe créée
+          description: Équipe de basket créée
           headers:
             Location:
-              description: URL de l'équipe crée
+              description: URI de l'équipe créée
               schema:
                 type: string
                 format: uri
-        '404':
-          description: Not Found
         '400':
           description: Champs manquants
   /teams/{id}:
     get:
       tags:
-        - Basket-end-point
+        - Team-end-point
       summary: Obtient une équipe
       operationId: getTeam
       parameters:
         - name: id
           in: path
-          description: numéro de l'équipe à obtenir
+          description: id de l'équipe de basket recherchée
           required: true
           schema:
             type: integer
             format: int32
       responses:
         '200':
-          description: OK
+          description: Récupération réussie
           content:
             'application/json':
               schema:
@@ -167,28 +173,65 @@ paths:
         '404':
           description: Not Found
       deprecated: false
-
+    put:
+      tags:
+        - Team-end-point
+      summary: Création ou écrasement d'une équipe de Basket
+      operationId: putTeam
+      parameters:
+        - name: id
+          in: path
+          description: id de l'équipe de basket à créer ou écraser
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/Team'
+      responses:
+        '200':
+          description: Modification de l'équipe réussie
+          headers:
+            Location:
+              description: URI de l'équipe modifiée
+              schema:
+                type: string
+                format: uri
+        '201':
+          description: Création de l'équipe réussie
+          headers:
+            Location:
+              description: URI de l'équipe créée
+              schema:
+                type: string
+                format: uri
+        '404':
+          description: Équipe de basket non trouvée
+        '400':
+          description: Champs manquants
+      deprecated: false
   /trophies:
     get:
       tags:
-        - Basket-end-point
+        - Trophy-end-point
       summary: Obtient une liste de tous les trophées de basket
       operationId: getTrophies
       responses:
         '200':
-          description: OK
+          description: Récupération réussie
           content:
             'application/json':
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/Trophy'
-        '404':
-          description: Not Found
     post:
       tags:
-        - Basket-end-point
-      summary: Ajout un nouveau trophée
+        - Trophy-end-point
+      summary: Ajoute un nouveau trophée
       operationId: addTrophy
       requestBody:
         content:
@@ -197,36 +240,78 @@ paths:
               $ref: '#/components/schemas/Trophy'
       responses:
         '201':
-          description: trophée créée
+          description: trophée créé
           headers:
             Location:
               description: URL de l'équipe crée
               schema:
                 type: string
                 format: uri
+        '400':
+          description: Champs manquants
   /trophies/{id}:
     get:
       tags:
-        - Basket-end-point
-      summary: Obtient tous kes trophées d'un joueur
+        - Trophy-end-point
+      summary: Obtient un trophée
       operationId: getTrophy
       parameters:
         - name: id
           in: path
-          description: numéro du joueur
+          description: id du trophée recherché
           required: true
           schema:
             type: integer
             format: int32
       responses:
         '200':
-          description: OK
+          description: Récupération réussie
           content:
             'application/json':
               schema:
                 $ref: '#/components/schemas/Trophy'
         '404':
           description: Not Found
+      deprecated: false
+    put:
+      tags:
+        - Trophy-end-point
+      summary: Création ou écrasement d'un trophée
+      operationId: putTrophy
+      parameters:
+        - name: id
+          in: path
+          description: id du trophée à créer ou écraser
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/Trophy'
+      responses:
+        '200':
+          description: Modification du trophée réussi
+          headers:
+            Location:
+              description: URI du trophée modifié
+              schema:
+                type: string
+                format: uri
+        '201':
+          description: Création du trophée réussi
+          headers:
+            Location:
+              description: URI du trophée créé
+              schema:
+                type: string
+                format: uri
+        '404':
+          description: Trophée non trouvé
+        '400':
+          description: Champs manquants
       deprecated: false
 components:
   schemas:
@@ -262,6 +347,7 @@ components:
           description: numéro auto-incrémenté du joueur de basket
           type: integer
           format: int32
+          readOnly: true
         name:
           description: prénom du joueur
           type: string
@@ -287,3 +373,21 @@ components:
             - team
             - trophies
       title: Playerobj
+    PlayerID:
+      allOf:
+        - $ref: '#/components/schemas/Player'
+        - type: object
+          properties:
+            teamId:
+              description: numéro de l'équipe du joueur
+              type: integer
+              format: int32
+            trophies:
+              description: liste des trophées obtenu par le joueur
+              type: array
+              items:
+                $ref: '#/components/schemas/Trophy'
+          required:
+            - teamId
+            - trophies
+      title: PlayerID

@@ -4,6 +4,7 @@ import ch.heig.basket.api.exceptions.PlayerNotFoundException;
 import ch.heig.basket.api.services.PlayerService;
 import org.openapitools.api.PlayersApi;
 import org.openapitools.model.Player;
+import org.openapitools.model.PlayerID;
 import org.openapitools.model.Playerobj;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,7 +13,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-public class PlayerEndPoint implements PlayersApi{
+public class PlayerEndPoint implements PlayersApi {
 
     private final PlayerService playerService;
 
@@ -24,9 +25,9 @@ public class PlayerEndPoint implements PlayersApi{
     public ResponseEntity<List<Playerobj>> getPlayers() {
         return ResponseEntity.ok(playerService.getPlayers());
     }
-/*
+
     @Override
-    public ResponseEntity<Void> addPlayer(Player player) {
+    public ResponseEntity<Void> addPlayer(PlayerID player) {
         try{
             int p = playerService.addPlayer(player);
 
@@ -34,20 +35,17 @@ public class PlayerEndPoint implements PlayersApi{
         } catch (PlayerNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
-
     }
 
     @Override
-    public ResponseEntity<Player> getPlayer(Integer id) {
+    public ResponseEntity<Playerobj> getPlayer(Integer id) {
         try{
-            Player p = playerService.getPlayer(id);
-
-            return ResponseEntity.ok(p);
+            return ResponseEntity.ok(playerService.getPlayer(id));
         } catch (PlayerNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
     }
-*/
+
 /*
     @Override
     public ResponseEntity<Void> addQuote(@RequestBody Quote quote) {
