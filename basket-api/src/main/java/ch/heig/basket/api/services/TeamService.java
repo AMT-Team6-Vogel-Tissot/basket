@@ -19,7 +19,6 @@ public class TeamService {
 
     public TeamService(TeamRepository teamRepository) {
         this.teamRepository = teamRepository;
-
         modelMapper = new ModelMapper();
     }
 

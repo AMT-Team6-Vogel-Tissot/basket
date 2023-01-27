@@ -24,7 +24,7 @@ public class BasketTeam {
         return team_name;
     }
 
-    public int getTeam_id() {return team_id;}
+    public int getId() {return team_id;}
 
     public void setName(String name) {
         this.team_name = name;

@@ -32,7 +32,7 @@ public class PlayerService {
         for (BasketPlayer playerEntity : playerEntities) {
             Player p;
             p = modelMapper.map(playerEntity, Player.class);
-            p.setFkTeam(playerEntity.getFq_name_team().getTeam_id());
+            p.setFkTeam(playerEntity.getFq_name_team().getId());
 
             players.add(p);
         }
