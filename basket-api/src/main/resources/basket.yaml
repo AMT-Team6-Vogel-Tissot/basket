@@ -121,6 +121,29 @@ paths:
                   $ref: '#/components/schemas/Team'
         '404':
           description: Not Found
+    post:
+      tags:
+        - Basket-end-point
+      summary: Ajoute une nouvelle équipe
+      operationId: addTeam
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/Team'
+      responses:
+        '201':
+          description: équipe créée
+          headers:
+            Location:
+              description: URL de l'équipe crée
+              schema:
+                type: string
+                format: uri
+        '404':
+          description: Not Found
+        '400':
+          description: Champs manquants
 
   /teams/{id}:
     get:
@@ -146,28 +169,6 @@ paths:
         '404':
           description: Not Found
       deprecated: false
-
-  /team:
-    post:
-      tags:
-        - Basket-end-point
-      summary: Ajoute une nouvelle équipe
-      operationId: addTeam
-      requestBody:
-        content:
-          'application/json':
-            schema:
-              $ref: '#/components/schemas/Team'
-      responses:
-        '201':
-          description: équipe créée
-          headers:
-            Location:
-              description: URL de l'équipe crée
-              schema:
-                type: string
-                format: uri
-
 
   /trophies:
     get:
