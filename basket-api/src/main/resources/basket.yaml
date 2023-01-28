@@ -38,6 +38,7 @@ paths:
           'application/json':
             schema:
               $ref: '#/components/schemas/PlayerID'
+        required: true
       responses:
         '201':
           description: Joueur de basket créé
@@ -49,6 +50,37 @@ paths:
                 format: uri
         '400':
           description: Champs manquants
+    put:
+      tags:
+        - Basket-end-point
+      summary: Création ou écrasement d'un joueur de basket
+      operationId: putPlayer
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/PlayerID'
+        required: true
+      responses:
+        '200':
+          description: Modification du joueur réussie
+          headers:
+            Location:
+              description: URI du joueur modifié
+              schema:
+                type: string
+                format: uri
+        '201':
+          description: Création du joueur réussie
+          headers:
+            Location:
+              description: URI du joueur créé
+              schema:
+                type: string
+                format: uri
+        '400':
+          description: Champs manquants
+      deprecated: false
   /players/{id}:
     get:
       tags:
@@ -73,45 +105,24 @@ paths:
         '404':
           description: Joueur de basket non trouvé
       deprecated: false
-    put:
+    delete:
       tags:
-        - Basket-end-point
-      summary: Création ou écrasement d'un joueur de basket
-      operationId: putPlayer
+        - Player-end-point
+      summary: Supprime un joueur de basket
+      operationId: deletePlayer
       parameters:
         - name: id
           in: path
-          description: id du joueur de basket à créer ou écraser
+          description: id du joueur de basket recherché
           required: true
           schema:
             type: integer
             format: int32
-      requestBody:
-        content:
-          'application/json':
-            schema:
-              $ref: '#/components/schemas/PlayerID'
       responses:
-        '200':
-          description: Modification du joueur réussie
-          headers:
-            Location:
-              description: URI du joueur modifié
-              schema:
-                type: string
-                format: uri
-        '201':
-          description: Création du joueur réussie
-          headers:
-            Location:
-              description: URI du joueur créé
-              schema:
-                type: string
-                format: uri
+        '204':
+          description: Suppression réussie
         '404':
           description: Joueur de basket non trouvé
-        '400':
-          description: Champs manquants
       deprecated: false
   /teams:
     get:
@@ -138,6 +149,7 @@ paths:
           'application/json':
             schema:
               $ref: '#/components/schemas/Team'
+        required: true
       responses:
         '201':
           description: Équipe de basket créée
@@ -173,45 +185,29 @@ paths:
         '404':
           description: Not Found
       deprecated: false
-    put:
+  /teams/{id}/players:
+    get:
       tags:
         - Team-end-point
-      summary: Création ou écrasement d'une équipe de Basket
-      operationId: putTeam
+      summary: Obtient tous les joueurs d'une équipe
+      operationId: getTeamPlayers
       parameters:
         - name: id
           in: path
-          description: id de l'équipe de basket à créer ou écraser
+          description: id de l'équipe de basket recherchée
           required: true
           schema:
             type: integer
             format: int32
-      requestBody:
-        content:
-          'application/json':
-            schema:
-              $ref: '#/components/schemas/Team'
       responses:
         '200':
-          description: Modification de l'équipe réussie
-          headers:
-            Location:
-              description: URI de l'équipe modifiée
+          description: Récupération réussie
+          content:
+            'application/json':
               schema:
-                type: string
-                format: uri
-        '201':
-          description: Création de l'équipe réussie
-          headers:
-            Location:
-              description: URI de l'équipe créée
-              schema:
-                type: string
-                format: uri
+                $ref: '#/components/schemas/Team'
         '404':
-          description: Équipe de basket non trouvée
-        '400':
-          description: Champs manquants
+          description: Not Found
       deprecated: false
   /trophies:
     get:
@@ -238,6 +234,7 @@ paths:
           'application/json':
             schema:
               $ref: '#/components/schemas/Trophy'
+        required: true
       responses:
         '201':
           description: trophée créé
@@ -273,46 +270,6 @@ paths:
         '404':
           description: Not Found
       deprecated: false
-    put:
-      tags:
-        - Trophy-end-point
-      summary: Création ou écrasement d'un trophée
-      operationId: putTrophy
-      parameters:
-        - name: id
-          in: path
-          description: id du trophée à créer ou écraser
-          required: true
-          schema:
-            type: integer
-            format: int32
-      requestBody:
-        content:
-          'application/json':
-            schema:
-              $ref: '#/components/schemas/Trophy'
-      responses:
-        '200':
-          description: Modification du trophée réussi
-          headers:
-            Location:
-              description: URI du trophée modifié
-              schema:
-                type: string
-                format: uri
-        '201':
-          description: Création du trophée réussi
-          headers:
-            Location:
-              description: URI du trophée créé
-              schema:
-                type: string
-                format: uri
-        '404':
-          description: Trophée non trouvé
-        '400':
-          description: Champs manquants
-      deprecated: false
 components:
   schemas:
     Team:
@@ -347,7 +304,6 @@ components:
           description: numéro auto-incrémenté du joueur de basket
           type: integer
           format: int32
-          readOnly: true
         name:
           description: prénom du joueur
           type: string

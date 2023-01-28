@@ -3,7 +3,6 @@ package ch.heig.basket.api.endpoints;
 import ch.heig.basket.api.exceptions.PlayerNotFoundException;
 import ch.heig.basket.api.services.PlayerService;
 import org.openapitools.api.PlayersApi;
-import org.openapitools.model.Player;
 import org.openapitools.model.PlayerID;
 import org.openapitools.model.Playerobj;
 import org.springframework.http.ResponseEntity;
@@ -46,35 +45,15 @@ public class PlayerEndPoint implements PlayersApi {
         }
     }
 
-/*
     @Override
-    public ResponseEntity<Void> addQuote(@RequestBody Quote quote) {
-        QuoteEntity quoteEntity = new QuoteEntity();
-        quoteEntity.setAuthor(quote.getAuthor());
-        quoteEntity.setCitation(quote.getCitation());
-        QuoteEntity quoteAdded = quoteRepository.save(quoteEntity);
-        URI uri = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(quoteAdded.getId())
-                .toUri();
-        return ResponseEntity.created(uri).build();
-    }
+    public ResponseEntity<Void> putPlayer(PlayerID player) {
+            int p = playerService.putPlayer(player);
 
-    @Override
-    public ResponseEntity<Quote> getQuote(Integer id) {
-        Optional<QuoteEntity> opt = quoteRepository.findById(id);
-        if (opt.isPresent()) {
-            QuoteEntity quoteEntity = opt.get();
-            Quote quote = new Quote();
-            quote.setId(quoteEntity.getId());
-            quote.setAuthor(quoteEntity.getAuthor());
-            quote.setCitation(quoteEntity.getCitation());
-            return new ResponseEntity<Quote>(quote, HttpStatus.OK);
-        } else {
-//            return ResponseEntity.notFound().build();
-            throw new QuoteNotFoundException(id);
-        }
+            if(p == player.getId()){
+                return ResponseEntity.ok().header("Location", String.valueOf(URI.create("/players/" + p))).build();
+            } else {
+                return ResponseEntity.created(URI.create("/players/" + p)).build();
+            }
+
     }
-*/
 }

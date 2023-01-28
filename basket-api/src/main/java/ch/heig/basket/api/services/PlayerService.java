@@ -7,15 +7,11 @@ import ch.heig.basket.api.repositories.PlayerRepository;
 import ch.heig.basket.api.repositories.TeamRepository;
 import ch.heig.basket.api.repositories.TrophyRepository;
 import org.modelmapper.ModelMapper;
-import org.openapitools.model.Player;
 import org.openapitools.model.PlayerID;
 import org.openapitools.model.Playerobj;
-import org.openapitools.model.Trophy;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PlayerService {
@@ -40,15 +36,20 @@ public class PlayerService {
 
     public Playerobj getPlayer(Integer id) throws PlayerNotFoundException {
 
-        Optional<BasketPlayer> basketPlayer = playerRepository.findById(id);
-
-        Playerobj playerobj = modelMapper.map(basketPlayer, Playerobj.class);
+        Playerobj playerobj = modelMapper.map(playerRepository.findById(id), Playerobj.class);
 
         if(playerobj == null){
             throw new PlayerNotFoundException(id);
         }
 
         return playerobj;
+    }
+
+    public int putPlayer(PlayerID player) {
+
+        BasketPlayer updateP = playerRepository.save(modelMapper.map(player, BasketPlayer.class));
+
+        return updateP.getId();
     }
 
 }
