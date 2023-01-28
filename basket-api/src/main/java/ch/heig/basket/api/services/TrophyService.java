@@ -1,13 +1,10 @@
 package ch.heig.basket.api.services;
 
-import ch.heig.basket.api.entities.BasketTeam;
 import ch.heig.basket.api.entities.BasketTrophy;
 import ch.heig.basket.api.exceptions.TeamNotFoundException;
 import ch.heig.basket.api.exceptions.TrophyNotFoundException;
 import ch.heig.basket.api.repositories.TrophyRepository;
 import org.modelmapper.ModelMapper;
-import org.openapitools.model.Team;
-import org.openapitools.model.TeamPlayers;
 import org.openapitools.model.Trophy;
 import org.openapitools.model.TrophyPlayers;
 import org.springframework.stereotype.Service;
