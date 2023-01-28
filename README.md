@@ -1,8 +1,9 @@
 # Basket - team 6
 
-https://www.youtube.com/watch?v=nu_K49vdk8U
 
 ## Lien Youtube pour la vidéo 
+
+https://www.youtube.com/watch?v=nu_K49vdk8U
 
 ## un peu de documentation
 
