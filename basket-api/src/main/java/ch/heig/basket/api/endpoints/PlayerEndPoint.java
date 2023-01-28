@@ -54,6 +54,16 @@ public class PlayerEndPoint implements PlayersApi {
             } else {
                 return ResponseEntity.created(URI.create("/players/" + p)).build();
             }
-
     }
+
+    @Override
+    public ResponseEntity<Void> deletePlayer(Integer id) {
+        try {
+            playerService.deletePlayer(id);
+        } catch (PlayerNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.noContent().build();
+    }
+
 }

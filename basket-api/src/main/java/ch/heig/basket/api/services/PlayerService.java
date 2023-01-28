@@ -12,6 +12,7 @@ import org.openapitools.model.Playerobj;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PlayerService {
@@ -50,6 +51,16 @@ public class PlayerService {
         BasketPlayer updateP = playerRepository.save(modelMapper.map(player, BasketPlayer.class));
 
         return updateP.getId();
+    }
+
+    public void deletePlayer(Integer id) throws PlayerNotFoundException {
+        BasketPlayer p = modelMapper.map(playerRepository.findById(id), BasketPlayer.class);
+
+        if(p == null){
+            throw new PlayerNotFoundException(id);
+        }
+
+        playerRepository.delete(p);
     }
 
 }
