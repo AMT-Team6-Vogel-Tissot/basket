@@ -1,9 +1,11 @@
 package ch.heig.basket.api.endpoints;
 
+import ch.heig.basket.api.exceptions.PlayerNotFoundException;
 import ch.heig.basket.api.exceptions.TeamNotFoundException;
 import ch.heig.basket.api.services.TeamService;
 import org.openapitools.api.TeamsApi;
 import org.openapitools.model.Team;
+import org.openapitools.model.TeamPlayers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,10 +28,13 @@ public class TeamEndPoint implements TeamsApi{
 
     @Override
     public ResponseEntity<Team> getTeam(Integer id) {
-        return ResponseEntity.ok(teamService.getTeam(id));
+        try{
+            return ResponseEntity.ok(teamService.getTeam(id));
+        } catch (PlayerNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-/*
     @Override
     public ResponseEntity<Void> addTeam(Team team) {
         try{
@@ -40,5 +45,13 @@ public class TeamEndPoint implements TeamsApi{
         }
 
     }
-*/
-}
+
+    @Override
+    public ResponseEntity<TeamPlayers> getTeamPlayers(Integer id) {
+        try{
+            return ResponseEntity.ok(teamService.getTeamPlayers(id));
+        } catch (PlayerNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    }

@@ -1,9 +1,12 @@
 package ch.heig.basket.api.services;
 
 import ch.heig.basket.api.entities.BasketTeam;
+import ch.heig.basket.api.exceptions.TeamNotFoundException;
 import ch.heig.basket.api.repositories.TeamRepository;
 import org.modelmapper.ModelMapper;
+import org.openapitools.model.Playerobj;
 import org.openapitools.model.Team;
+import org.openapitools.model.TeamPlayers;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -13,7 +16,6 @@ import java.util.List;
 public class TeamService {
 
     private final TeamRepository teamRepository;
-
     private final ModelMapper modelMapper;
 
     public TeamService(TeamRepository teamRepository) {
@@ -22,32 +24,32 @@ public class TeamService {
     }
 
     public List<Team> getTeams(){
-        List<BasketTeam> teamEntities = teamRepository.findAll();
-        List<Team> teams = new ArrayList<>();
+        return teamRepository.findAll().stream().map(basketTeam -> modelMapper.map(basketTeam, Team.class)).toList();
+    }
 
-        for (BasketTeam teamEntity : teamEntities) {
-            Team t;
-            t = modelMapper.map(teamEntity, Team.class);
-            teams.add(t);
+    public Team getTeam(int id) throws TeamNotFoundException {
+        BasketTeam basketTeam = teamRepository.findById(id);
+
+        if(basketTeam == null) {
+            throw new TeamNotFoundException(id);
         }
 
-        return teams;
+        return modelMapper.map(basketTeam, Team.class);
     }
 
-    public Team getTeam(int id){
-        BasketTeam teamEntity = teamRepository.findById(id);
-
-        return modelMapper.map(teamEntity, Team.class);
-    }
-
-
-/*
     public int addTeam(Team team) {
-        Team newTeam;
-        BasketTeam basketTeam = teamRepository.save(new BasketTeam(team.getId(), team.getName()));
-        newTeam = modelMapper.map(basketTeam, Team.class);
+        BasketTeam basketTeam = teamRepository.save(modelMapper.map(team, BasketTeam.class));
 
-        return newTeam.getId();
+        return modelMapper.map(basketTeam, Team.class).getId();
     }
-*/
+
+    public TeamPlayers getTeamPlayers(int id) throws TeamNotFoundException {
+        BasketTeam basketTeam = teamRepository.findById(id);
+
+        if(basketTeam == null) {
+            throw new TeamNotFoundException(id);
+        }
+
+        return modelMapper.map(basketTeam, TeamPlayers.class);
+    }
 }

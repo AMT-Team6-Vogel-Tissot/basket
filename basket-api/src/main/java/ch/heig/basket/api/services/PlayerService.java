@@ -12,22 +12,20 @@ import org.openapitools.model.Playerobj;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PlayerService {
 
     private final PlayerRepository playerRepository;
-
     private final ModelMapper modelMapper;
 
-    public PlayerService(PlayerRepository playerRepository, TeamRepository teamRepository, TrophyRepository trophyRepository) {
+    public PlayerService(PlayerRepository playerRepository) {
         this.playerRepository = playerRepository;
         modelMapper = new ModelMapper();
     }
 
     public List<Playerobj> getPlayers() {
-        return playerRepository.findAll().stream().map(playerEntity -> modelMapper.map(playerEntity, Playerobj.class)).toList();
+        return playerRepository.findAll().stream().map(basketPlayer -> modelMapper.map(basketPlayer, Playerobj.class)).toList();
     }
 
     public int addPlayer(PlayerID player) throws TeamNotFoundException {

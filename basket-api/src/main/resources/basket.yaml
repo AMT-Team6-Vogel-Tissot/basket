@@ -52,7 +52,7 @@ paths:
           description: Champs manquants
     put:
       tags:
-        - Basket-end-point
+        - Player-end-point
       summary: Création ou écrasement d'un joueur de basket
       operationId: putPlayer
       requestBody:
@@ -205,7 +205,7 @@ paths:
           content:
             'application/json':
               schema:
-                $ref: '#/components/schemas/Team'
+                $ref: '#/components/schemas/TeamPlayers'
         '404':
           description: Not Found
       deprecated: false
@@ -283,6 +283,8 @@ components:
         name:
           description: nom de l'équipe
           type: string
+      required:
+        - name
       title: Team
     Trophy:
       description: description d'un trophée
@@ -295,6 +297,8 @@ components:
         name:
           description: nom du trophée
           type: string
+      required:
+        - name
       title: Trophy
     Player:
       description: description d'un joueur de basket
@@ -347,3 +351,16 @@ components:
             - teamId
             - trophies
       title: PlayerID
+    TeamPlayers:
+      allOf:
+        - $ref: '#/components/schemas/Team'
+        - type: object
+          properties:
+            players:
+              description: liste des joueurs de l'équipe
+              type: array
+              items:
+                $ref: '#/components/schemas/Player'
+          required:
+            - players
+      title: TeamPlayers
