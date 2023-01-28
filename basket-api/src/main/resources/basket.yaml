@@ -270,6 +270,30 @@ paths:
         '404':
           description: Not Found
       deprecated: false
+  /trophies/{id}/players:
+    get:
+      tags:
+        - Trophy-end-point
+      summary: Obtient tous les joueurs qui ont obtenu un certain trophée
+      operationId: getTrophyPlayers
+      parameters:
+        - name: id
+          in: path
+          description: id du trophée recherché
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Récupération réussie
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/TrophyPlayers'
+        '404':
+          description: Not Found
+      deprecated: false
 components:
   schemas:
     Team:
@@ -364,3 +388,16 @@ components:
           required:
             - players
       title: TeamPlayers
+    TrophyPlayers:
+      allOf:
+        - $ref: '#/components/schemas/Trophy'
+        - type: object
+          properties:
+            players:
+              description: liste des joueurs ayant obtenu chaque trophée
+              type: array
+              items:
+                $ref: '#/components/schemas/Player'
+          required:
+            - players
+      title: TrophyPlayers
