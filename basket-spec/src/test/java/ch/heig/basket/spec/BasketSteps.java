@@ -11,7 +11,6 @@ import org.openapitools.client.api.TeamEndPointApi;
 import org.openapitools.client.model.PlayerID;
 import org.openapitools.client.model.PlayerPatch;
 import org.openapitools.client.model.Team;
-import org.openapitools.client.model.Trophy;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,8 +38,7 @@ public class BasketSteps {
         playerId = new PlayerID();
         playerId.setName("Olivier");
         playerId.setSurname("Tissot");
-        Integer teamid = 2;
-        playerId.setTeamId(teamid);
+        playerId.setTeamId(2);
 
     }
 
