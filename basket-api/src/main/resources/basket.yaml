@@ -385,14 +385,15 @@ components:
               description: numéro de l'équipe du joueur
               type: integer
               format: int32
-            trophies:
-              description: liste des trophées obtenu par le joueur
+            trophiesId:
+              description: id des trophées du joueur
               type: array
               items:
-                $ref: '#/components/schemas/Trophy'
+                type: integer
+                format: int32
           required:
             - teamId
-            - trophies
+            - trophiesId
       title: PlayerID
     PlayerPatch:
       description: description d'un joueur de basket pour la requête PATCH

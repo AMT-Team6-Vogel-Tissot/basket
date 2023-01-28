@@ -6,6 +6,7 @@ import ch.heig.basket.api.entities.BasketTrophy;
 import ch.heig.basket.api.exceptions.PlayerNotFoundException;
 import ch.heig.basket.api.exceptions.TeamNotFoundException;
 import ch.heig.basket.api.repositories.PlayerRepository;
+import io.swagger.models.auth.In;
 import org.modelmapper.ModelMapper;
 import org.openapitools.model.PlayerID;
 import org.openapitools.model.PlayerPatch;
@@ -22,6 +23,16 @@ public class PlayerService {
     private final PlayerRepository playerRepository;
     private final ModelMapper modelMapper;
 
+    private List<BasketTrophy> convertTrophID(List<Integer> trophiesIDs) {
+        List<BasketTrophy> Listbt = new ArrayList<>();
+
+        for (Integer t : trophiesIDs) {
+            BasketTrophy basketTrophy = modelMapper.map(playerRepository.findById(t), BasketTrophy.class);
+            Listbt.add(basketTrophy);
+        }
+        return Listbt;
+    }
+
     public PlayerService(PlayerRepository playerRepository) {
         this.playerRepository = playerRepository;
         modelMapper = new ModelMapper();
@@ -33,7 +44,11 @@ public class PlayerService {
 
     public int addPlayer(PlayerID player) throws TeamNotFoundException {
 
-        return modelMapper.map(playerRepository.save(modelMapper.map(player, BasketPlayer.class)), PlayerID.class).getId();
+        BasketPlayer basketPlayer = modelMapper.map(player, BasketPlayer.class);
+
+        basketPlayer.setTrophies(convertTrophID(player.getTrophiesId()));
+
+        return modelMapper.map(playerRepository.save(basketPlayer), PlayerID.class).getId();
     }
 
     public Playerobj getPlayer(Integer id) throws PlayerNotFoundException {
@@ -49,9 +64,11 @@ public class PlayerService {
 
     public int putPlayer(PlayerID player) {
 
-        BasketPlayer updateP = playerRepository.save(modelMapper.map(player, BasketPlayer.class));
+        BasketPlayer basketPlayer = modelMapper.map(player, BasketPlayer.class);
 
-        return updateP.getId();
+        basketPlayer.setTrophies(convertTrophID(player.getTrophiesId()));
+
+        return playerRepository.save(basketPlayer).getId();
     }
 
     public void deletePlayer(Integer id) throws PlayerNotFoundException {
@@ -84,13 +101,7 @@ public class PlayerService {
             basketPlayer.setTeam(b);
         }
         if(playerPatch.getTrophiesId() != null) {
-            List<BasketTrophy> Listbt = new ArrayList<>();
-
-            for (Integer t : playerPatch.getTrophiesId()) {
-                BasketTrophy basketTrophy = modelMapper.map(playerRepository.findById(t), BasketTrophy.class);
-                Listbt.add(basketTrophy);
-            }
-            basketPlayer.setTrophies(Listbt);
+            basketPlayer.setTrophies(convertTrophID(playerPatch.getTrophiesId()));
         }
 
         playerRepository.save(basketPlayer);
