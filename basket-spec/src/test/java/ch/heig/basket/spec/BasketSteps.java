@@ -5,40 +5,52 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openapitools.client.ApiException;
 import org.openapitools.client.ApiResponse;
-import org.openapitools.client.api.BasketEndPointApi;
-import org.openapitools.client.model.Player;
+import org.openapitools.client.api.PlayerEndPointApi;
+import org.openapitools.client.api.TeamEndPointApi;
+
+import org.openapitools.client.model.PlayerID;
+import org.openapitools.client.model.PlayerPatch;
 import org.openapitools.client.model.Team;
+import org.openapitools.client.model.Trophy;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class BasketSteps {
 
-    private final BasketEndPointApi api = new BasketEndPointApi();
-    private Player player;
+    private final PlayerEndPointApi apiPlayer = new PlayerEndPointApi();
+    private final TeamEndPointApi apiTeam = new TeamEndPointApi();
 
-    private int playerId;
+    private PlayerID playerId;
+
     private int statusCode;
     private int teamId;
 
     private String teamName;
+
+    private PlayerPatch playerpatch;
 
 
 
 
     @Given("I have an player payload")
     public void iHaveAnPlayerPayload() {
-        player = new Player();
-        player.setId(42);
-        player.setName("Olivier");
-        player.setSurname("Tissot");
-        player.setFkTeam(2);
+        playerId = new PlayerID();
+        playerId.setId(11);
+        playerId.setName("Olivier");
+        playerId.setSurname("Tissot");
+        playerId.setTeamId(2);
+        List<Integer> trophies = new ArrayList<>();
+        playerId.setTrophiesId(trophies);
     }
 
     @When("I POST it to the \\/players endpoint")
     public void iPOSTItToThePlayersEndpoint() {
         try {
-            ApiResponse<Player> response = api.addPlayerWithHttpInfo(player);
+            ApiResponse<Void> response = apiPlayer.addPlayerWithHttpInfo(playerId);
             statusCode = response.getStatusCode();
         } catch (ApiException e) {
             statusCode = e.getCode();
@@ -58,7 +70,7 @@ public class BasketSteps {
     @When("I GET it to the \\/teams\\/id endpoint")
     public void iGETItToTheTeamsIdEndpoint() {
         try {
-            Team response = api.getTeam(teamId);
+            Team response = apiTeam.getTeam(teamId);
             teamName = response.getName();
         } catch (ApiException e) {
             statusCode = e.getCode();
@@ -73,18 +85,22 @@ public class BasketSteps {
 
     @Given("I have the player id {int} and a playload")
     public void iHaveThePlayerIdAndAPlayload(int arg0) {
-        playerId = arg0;
-        player = new Player();
-        player.setSurname("Tissot-Daguette");
+        playerpatch = new PlayerPatch();
+        playerpatch.setId(arg0);
+        playerpatch.setName("Maelle");
+        playerpatch.setSurname("Vogel");
+
     }
 
-    @When("I PATCH it to the \\/players\\/\\{id} endpoint")
-    public void iPATCHItToThePlayersIdEndpoint() {
+    @When("I PATCH it to the \\/players endpoint")
+    public void iPatchItToThePlayersIdEndpoint() {
         try {
-            ApiResponse<Player> response = api.patchPlayerWithHttpInfo(playerId, player);
+            ApiResponse<Void> response = apiPlayer.patchPlayerWithHttpInfo(playerpatch);
             statusCode = response.getStatusCode();
         } catch (ApiException e) {
             statusCode = e.getCode();
         }
     }
+
+
 }
