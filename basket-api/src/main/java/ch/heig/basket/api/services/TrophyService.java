@@ -10,6 +10,7 @@ import org.openapitools.model.TrophyPlayers;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TrophyService {
@@ -23,11 +24,11 @@ public class TrophyService {
     }
 
     public List<Trophy> getTrophies(){
-        return trophyRepository.findAll().stream().map(basketTrophy -> modelMapper.map(basketTrophy, Trophy.class)).toList();
+        return trophyRepository.findAll().stream().map(basketTrophy -> modelMapper.map(basketTrophy, Trophy.class)).collect(Collectors.toList());
     }
 
     public Trophy getTrophy(int id) throws TrophyNotFoundException {
-        BasketTrophy basketTrophy = trophyRepository.findById(id);
+        BasketTrophy basketTrophy = modelMapper.map(trophyRepository.findById(id), BasketTrophy.class);
 
         if(basketTrophy == null) {
             throw new TrophyNotFoundException(id);
@@ -43,7 +44,7 @@ public class TrophyService {
     }
 
     public TrophyPlayers getTrophyPlayers(int id) throws TrophyNotFoundException {
-        BasketTrophy basketTrophy = trophyRepository.findById(id);
+        BasketTrophy basketTrophy = modelMapper.map(trophyRepository.findById(id), BasketTrophy.class);
 
         if(basketTrophy == null) {
             throw new TeamNotFoundException(id);

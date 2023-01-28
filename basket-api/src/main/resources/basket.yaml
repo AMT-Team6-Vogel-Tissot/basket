@@ -81,6 +81,25 @@ paths:
         '400':
           description: Champs manquants
       deprecated: false
+    patch:
+      tags:
+        - Player-end-point
+      summary: Modifier un joueur de basket
+      operationId: patchPlayer
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/PlayerPatch'
+        required: true
+      responses:
+        '200':
+          description: Modification du joueur réussie
+        '400':
+          description: Champs manquants
+        '404':
+          description: Joueur de basket non trouvé
+      deprecated: false
   /players/{id}:
     get:
       tags:
@@ -375,6 +394,33 @@ components:
             - teamId
             - trophies
       title: PlayerID
+    PlayerPatch:
+      description: description d'un joueur de basket pour la requête PATCH
+      type: object
+      properties:
+        id:
+          description: numéro auto-incrémenté du joueur de basket
+          type: integer
+          format: int32
+        name:
+          description: prénom du joueur
+          type: string
+        surname:
+          description: nom du joueur
+          type: string
+        teamId:
+          description: numéro de l'équipe du joueur
+          type: integer
+          format: int32
+        trophiesId:
+          description: id des trophées du joueur
+          type: array
+          items:
+            type: integer
+            format: int32
+      required:
+        - id
+      title: PlayerPatch
     TeamPlayers:
       allOf:
         - $ref: '#/components/schemas/Team'

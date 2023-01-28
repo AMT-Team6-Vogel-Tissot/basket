@@ -4,6 +4,7 @@ import ch.heig.basket.api.exceptions.PlayerNotFoundException;
 import ch.heig.basket.api.services.PlayerService;
 import org.openapitools.api.PlayersApi;
 import org.openapitools.model.PlayerID;
+import org.openapitools.model.PlayerPatch;
 import org.openapitools.model.Playerobj;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -64,6 +65,17 @@ public class PlayerEndPoint implements PlayersApi {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.noContent().build();
+    }
+
+    @Override
+    public ResponseEntity<Void> patchPlayer(PlayerPatch playerPatch) {
+        try{
+            playerService.patchPlayer(playerPatch);
+
+            return ResponseEntity.ok().build();
+        } catch (PlayerNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }

@@ -4,13 +4,12 @@ import ch.heig.basket.api.entities.BasketTeam;
 import ch.heig.basket.api.exceptions.TeamNotFoundException;
 import ch.heig.basket.api.repositories.TeamRepository;
 import org.modelmapper.ModelMapper;
-import org.openapitools.model.Playerobj;
 import org.openapitools.model.Team;
 import org.openapitools.model.TeamPlayers;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TeamService {
@@ -24,11 +23,11 @@ public class TeamService {
     }
 
     public List<Team> getTeams(){
-        return teamRepository.findAll().stream().map(basketTeam -> modelMapper.map(basketTeam, Team.class)).toList();
+        return teamRepository.findAll().stream().map(basketTeam -> modelMapper.map(basketTeam, Team.class)).collect(Collectors.toList());
     }
 
     public Team getTeam(int id) throws TeamNotFoundException {
-        BasketTeam basketTeam = teamRepository.findById(id);
+        BasketTeam basketTeam = modelMapper.map(teamRepository.findById(id), BasketTeam.class);
 
         if(basketTeam == null) {
             throw new TeamNotFoundException(id);
@@ -44,7 +43,7 @@ public class TeamService {
     }
 
     public TeamPlayers getTeamPlayers(int id) throws TeamNotFoundException {
-        BasketTeam basketTeam = teamRepository.findById(id);
+        BasketTeam basketTeam = modelMapper.map(teamRepository.findById(id), BasketTeam.class);
 
         if(basketTeam == null) {
             throw new TeamNotFoundException(id);
