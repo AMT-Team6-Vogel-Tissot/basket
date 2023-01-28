@@ -13,8 +13,6 @@ import org.openapitools.client.model.PlayerPatch;
 import org.openapitools.client.model.Team;
 import org.openapitools.client.model.Trophy;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -39,12 +37,11 @@ public class BasketSteps {
     @Given("I have an player payload")
     public void iHaveAnPlayerPayload() {
         playerId = new PlayerID();
-        playerId.setId(11);
         playerId.setName("Olivier");
         playerId.setSurname("Tissot");
-        playerId.setTeamId(2);
-        List<Integer> trophies = new ArrayList<>();
-        playerId.setTrophiesId(trophies);
+        Integer teamid = 2;
+        playerId.setTeamId(teamid);
+
     }
 
     @When("I POST it to the \\/players endpoint")
