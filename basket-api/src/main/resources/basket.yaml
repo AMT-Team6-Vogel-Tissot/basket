@@ -1,0 +1,450 @@
+openapi: '3.0.3'
+info:
+  description: Documentation de l'API Basket
+  version: '1.0'
+  title: Api Documentation
+servers:
+  - url: 'http://localhost:9090/api'
+tags:
+  - name: Player-end-point
+    description: Gestion des joueurs de basket
+  - name: Team-end-point
+    description: Gestion des équipes de basket
+  - name: Trophy-end-point
+    description: Gestion des trophées des joueurs de basket
+paths:
+  /players:
+    get:
+      tags:
+        - Player-end-point
+      summary: Obtient une liste de tous les joueurs de basket avec leur équipe et leurs trophées individuel
+      operationId: getPlayers
+      responses:
+        '200':
+          description: Récupération réussie
+          content:
+            'application/json':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Playerobj'
+    post:
+      tags:
+        - Player-end-point
+      summary: Ajoute un nouveau joueur de basket
+      operationId: addPlayer
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/PlayerID'
+        required: true
+      responses:
+        '201':
+          description: Joueur de basket créé
+          headers:
+            Location:
+              description: URI du joueur créé
+              schema:
+                type: string
+                format: uri
+        '400':
+          description: Champs manquants
+    put:
+      tags:
+        - Player-end-point
+      summary: Création ou écrasement d'un joueur de basket
+      operationId: putPlayer
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/PlayerID'
+        required: true
+      responses:
+        '200':
+          description: Modification du joueur réussie
+          headers:
+            Location:
+              description: URI du joueur modifié
+              schema:
+                type: string
+                format: uri
+        '201':
+          description: Création du joueur réussie
+          headers:
+            Location:
+              description: URI du joueur créé
+              schema:
+                type: string
+                format: uri
+        '400':
+          description: Champs manquants
+      deprecated: false
+    patch:
+      tags:
+        - Player-end-point
+      summary: Modifier un joueur de basket
+      operationId: patchPlayer
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/PlayerPatch'
+        required: true
+      responses:
+        '200':
+          description: Modification du joueur réussie
+        '400':
+          description: Champs manquants
+        '404':
+          description: Joueur de basket non trouvé
+      deprecated: false
+  /players/{id}:
+    get:
+      tags:
+        - Player-end-point
+      summary: Obtient un joueur de basket
+      operationId: getPlayer
+      parameters:
+        - name: id
+          in: path
+          description: id du joueur de basket recherché
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Récupération réussie
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/Playerobj'
+        '404':
+          description: Joueur de basket non trouvé
+      deprecated: false
+    delete:
+      tags:
+        - Player-end-point
+      summary: Supprime un joueur de basket
+      operationId: deletePlayer
+      parameters:
+        - name: id
+          in: path
+          description: id du joueur de basket recherché
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '204':
+          description: Suppression réussie
+        '404':
+          description: Joueur de basket non trouvé
+      deprecated: false
+  /teams:
+    get:
+      tags:
+        - Team-end-point
+      summary: Obtient une liste de toutes les équipes de Basket
+      operationId: getTeams
+      responses:
+        '200':
+          description: Récupération réussie
+          content:
+            'application/json':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Team'
+    post:
+      tags:
+        - Team-end-point
+      summary: Ajoute une nouvelle équipe de Basket
+      operationId: addTeam
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/Team'
+        required: true
+      responses:
+        '201':
+          description: Équipe de basket créée
+          headers:
+            Location:
+              description: URI de l'équipe créée
+              schema:
+                type: string
+                format: uri
+        '400':
+          description: Champs manquants
+  /teams/{id}:
+    get:
+      tags:
+        - Team-end-point
+      summary: Obtient une équipe
+      operationId: getTeam
+      parameters:
+        - name: id
+          in: path
+          description: id de l'équipe de basket recherchée
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Récupération réussie
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/Team'
+        '404':
+          description: Not Found
+      deprecated: false
+  /teams/{id}/players:
+    get:
+      tags:
+        - Team-end-point
+      summary: Obtient tous les joueurs d'une équipe
+      operationId: getTeamPlayers
+      parameters:
+        - name: id
+          in: path
+          description: id de l'équipe de basket recherchée
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Récupération réussie
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/TeamPlayers'
+        '404':
+          description: Not Found
+      deprecated: false
+  /trophies:
+    get:
+      tags:
+        - Trophy-end-point
+      summary: Obtient une liste de tous les trophées de basket
+      operationId: getTrophies
+      responses:
+        '200':
+          description: Récupération réussie
+          content:
+            'application/json':
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Trophy'
+    post:
+      tags:
+        - Trophy-end-point
+      summary: Ajoute un nouveau trophée
+      operationId: addTrophy
+      requestBody:
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/Trophy'
+        required: true
+      responses:
+        '201':
+          description: trophée créé
+          headers:
+            Location:
+              description: URL de l'équipe crée
+              schema:
+                type: string
+                format: uri
+        '400':
+          description: Champs manquants
+  /trophies/{id}:
+    get:
+      tags:
+        - Trophy-end-point
+      summary: Obtient un trophée
+      operationId: getTrophy
+      parameters:
+        - name: id
+          in: path
+          description: id du trophée recherché
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Récupération réussie
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/Trophy'
+        '404':
+          description: Not Found
+      deprecated: false
+  /trophies/{id}/players:
+    get:
+      tags:
+        - Trophy-end-point
+      summary: Obtient tous les joueurs qui ont obtenu un certain trophée
+      operationId: getTrophyPlayers
+      parameters:
+        - name: id
+          in: path
+          description: id du trophée recherché
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Récupération réussie
+          content:
+            'application/json':
+              schema:
+                $ref: '#/components/schemas/TrophyPlayers'
+        '404':
+          description: Not Found
+      deprecated: false
+components:
+  schemas:
+    Team:
+      description: description d'une équipe de basket
+      type: object
+      properties:
+        id:
+          description: numéro auto-incrémenté de l'équipe
+          type: integer
+          format: int32
+        name:
+          description: nom de l'équipe
+          type: string
+      required:
+        - name
+      title: Team
+    Trophy:
+      description: description d'un trophée
+      type: object
+      properties:
+        id:
+          description: numéro auto-incrémenté du trophée
+          type: integer
+          format: int32
+        name:
+          description: nom du trophée
+          type: string
+      required:
+        - name
+      title: Trophy
+    Player:
+      description: description d'un joueur de basket
+      type: object
+      properties:
+        id:
+          description: numéro auto-incrémenté du joueur de basket
+          type: integer
+          format: int32
+        name:
+          description: prénom du joueur
+          type: string
+        surname:
+          description: nom du joueur
+          type: string
+      required:
+        - name
+        - surname
+      title: Player
+    Playerobj:
+      allOf:
+        - $ref: '#/components/schemas/Player'
+        - type: object
+          properties:
+            team:
+              $ref: '#/components/schemas/Team'
+            trophies:
+              type: array
+              items:
+                $ref: '#/components/schemas/Trophy'
+          required:
+            - team
+            - trophies
+      title: Playerobj
+    PlayerID:
+      allOf:
+        - $ref: '#/components/schemas/Player'
+        - type: object
+          properties:
+            teamId:
+              description: numéro de l'équipe du joueur
+              type: integer
+              format: int32
+            trophiesId:
+              description: id des trophées du joueur
+              type: array
+              items:
+                type: integer
+                format: int32
+          required:
+            - teamId
+            - trophiesId
+      title: PlayerID
+    PlayerPatch:
+      description: description d'un joueur de basket pour la requête PATCH
+      type: object
+      properties:
+        id:
+          description: numéro auto-incrémenté du joueur de basket
+          type: integer
+          format: int32
+        name:
+          description: prénom du joueur
+          type: string
+        surname:
+          description: nom du joueur
+          type: string
+        teamId:
+          description: numéro de l'équipe du joueur
+          type: integer
+          format: int32
+        trophiesId:
+          description: id des trophées du joueur
+          type: array
+          items:
+            type: integer
+            format: int32
+      required:
+        - id
+      title: PlayerPatch
+    TeamPlayers:
+      allOf:
+        - $ref: '#/components/schemas/Team'
+        - type: object
+          properties:
+            players:
+              description: liste des joueurs de l'équipe
+              type: array
+              items:
+                $ref: '#/components/schemas/Player'
+          required:
+            - players
+      title: TeamPlayers
+    TrophyPlayers:
+      allOf:
+        - $ref: '#/components/schemas/Trophy'
+        - type: object
+          properties:
+            players:
+              description: liste des joueurs ayant obtenu chaque trophée
+              type: array
+              items:
+                $ref: '#/components/schemas/Player'
+          required:
+            - players
+      title: TrophyPlayers

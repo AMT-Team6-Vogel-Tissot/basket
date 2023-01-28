@@ -9,13 +9,13 @@ import lombok.Setter;
 
 import java.util.List;
 
-@Entity(name = "Team")
-@Table(name = "teams")
+@Entity(name = "Player")
+@Table(name = "players")
 @NoArgsConstructor
-@Setter
 @Getter
+@Setter
 @AllArgsConstructor
-public class BasketTeam {
+public class BasketPlayer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +23,11 @@ public class BasketTeam {
 
     private String name;
 
-    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
-    private List<BasketPlayer> basketPlayers;
+    private String surname;
 
+    @ManyToOne(optional = false)
+    private BasketTeam team;
+
+    @ManyToMany
+    private List<BasketTrophy> trophies;
 }
